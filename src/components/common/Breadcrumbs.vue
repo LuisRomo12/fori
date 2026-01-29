@@ -1,20 +1,29 @@
 <template>
-  <nav class="breadcrumbs" aria-label="Ruta de navegación">
+  <nav class="breadcrumb-container" aria-label="Ruta de navegación">
     <ol class="breadcrumb-list">
       <li class="breadcrumb-item">
-        <router-link to="/">Inicio</router-link>
+        <router-link to="/" class="breadcrumb-link home-link">
+          <span class="icon">🏠</span>
+          <span class="text">Inicio</span>
+        </router-link>
       </li>
 
       <li 
         v-for="(crumb, index) in breadcrumbs" 
         :key="index" 
         class="breadcrumb-item"
-        :class="{ 'active': index === breadcrumbs.length - 1 }"
       >
-        <router-link v-if="index < breadcrumbs.length - 1" :to="crumb.path">
+        <span class="separator">›</span>
+        <router-link 
+          v-if="index < breadcrumbs.length - 1" 
+          :to="crumb.path" 
+          class="breadcrumb-link"
+        >
           {{ crumb.name }}
         </router-link>
-        <span v-else aria-current="page">{{ crumb.name }}</span>
+        <span v-else class="current-page" aria-current="page">
+          {{ crumb.name }}
+        </span>
       </li>
     </ol>
   </nav>
@@ -25,7 +34,6 @@ export default {
   name: 'Breadcrumbs',
   computed: {
     breadcrumbs() {
-      // Lógica para obtener las migas de pan desde el meta de la ruta o el path
       const routeArray = this.$route.path.split('/').filter(p => p !== '');
       let pathAccumulator = '';
       
@@ -42,38 +50,64 @@ export default {
 </script>
 
 <style scoped>
-.breadcrumbs {
-  padding: 15px 5%;
-  background-color: #FDF9F1; /* Color crema de tu paleta */
+.breadcrumb-container {
+  padding: 12px 5%;
+  background-color: #FDF9F1; /* Crema de tu paleta */
   border-bottom: 1px solid #F4B8C1; /* Rosa pastel */
 }
 
 .breadcrumb-list {
   display: flex;
+  align-items: center;
   list-style: none;
-  gap: 10px;
-  font-size: 0.85rem;
-  color: #5A4A42; /* Café suave de tu paleta */
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
 }
 
-.breadcrumb-item + .breadcrumb-item::before {
-  content: " / ";
-  color: #B7B16B; /* Verde oliva de tu paleta */
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #5A4A42; /* Café suave */
 }
 
-.breadcrumb-item a {
+.breadcrumb-link {
   text-decoration: none;
-  color: #D1823C; /* Ocre de tu paleta */
-  font-weight: 500;
+  color: #D1823C; /* Ocre */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
-.breadcrumb-item a:hover {
-  color: #D26259; /* Rosa intenso */
-  text-decoration: underline;
+.breadcrumb-link:hover {
+  background-color: #F4B8C1;
+  color: #ffffff;
 }
 
-.breadcrumb-item.active {
+.separator {
+  margin: 0 8px;
+  color: #B7B16B; /* Verde oliva */
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #5A4A42;
+}
+
+.current-page {
+  font-weight: 600;
+  color: #D26259; /* Rosa intenso */
+  padding: 4px 8px;
+}
+
+.home-link .icon {
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .breadcrumb-link .text {
+    display: none; /* En móvil solo mostramos el icono de inicio */
+  }
 }
 </style>
