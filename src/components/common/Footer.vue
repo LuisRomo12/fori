@@ -26,7 +26,6 @@
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; 2026 UTFlower. Todos los derechos reservados. | IDGS 8C </p>
     </div>
   </footer>
 </template>

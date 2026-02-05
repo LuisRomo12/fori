@@ -2,7 +2,11 @@
   <div id="app">
     <Navbar /> 
     
-    <router-view /> 
+    <breadcrumbs /> 
+
+    <main>
+      <router-view /> 
+    </main>
 
     <Footer />
   </div>
@@ -11,15 +15,13 @@
 <script>
 import Navbar from './components/common/Navbar.vue'
 import Footer from './components/common/Footer.vue'
-import breadcrumbs from './components/common/Breadcrumbs.vue'
+import breadcrumbs from './components/common/Breadcrumbs.vue' //
 
 export default {
   components: {
     Navbar,
     Footer,
-    breadcrumbs
-
-
+    breadcrumbs //
   }
 }
 </script>

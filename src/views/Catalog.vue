@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <Breadcrumbs /> <h1>Nuestro Catálogo de Flores</h1>
-    </div>
+  <div class="container">
+    <h1>Nuestro Catálogo de Flores</h1>
+  </div>
 </template>
 
 <script>
-import Breadcrumbs from '@/components/common/Breadcrumbs.vue'
+// Puedes eliminar la importación aquí también para limpiar el código
 export default {
-  components: { Breadcrumbs }
+  name: 'CatalogView'
 }
 </script>

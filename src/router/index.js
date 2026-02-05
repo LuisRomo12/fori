@@ -1,22 +1,33 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// Importas tus componentes de error
 import Error404 from '@/views/errors/Error404.vue'
 import Error500 from '@/views/errors/Error500.vue'
+import Home from '@/views/Home.vue'
+import Catalog from '@/views/Catalog.vue'
+import About from '@/views/About.vue'
+import SearchView from '@/views/SearchView.vue'
 
 const routes = [
-  // ... tus otras rutas (Home, Catalogo, etc.)
+  { path: '/', name: 'Home', component: Home },
   
-  {
-    path: '/500',
-    name: 'Error500',
-    component: Error500
-  },
-  // Esta ruta SIEMPRE debe ir al final
+  { path: '/catalogo', name: 'Catalogo', component: Catalog },
+  { path: '/500', name: 'Error500', component: Error500 },
   {
     path: '/:pathMatch(.*)*', 
     name: 'NotFound',
     component: Error404
+  },
+  {
+    path: '/nosotros',
+    name: 'Nosotros',
+    component: About
+  },
+  {
+    path: '/busqueda',
+    name: 'Busqueda',
+    component: SearchView,
   }
+
+
 ]
 
 const router = createRouter({
