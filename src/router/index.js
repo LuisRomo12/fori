@@ -5,6 +5,7 @@ import Home from '@/views/Home.vue'
 import Catalog from '@/views/Catalog.vue'
 import About from '@/views/About.vue'
 import SearchView from '@/views/SearchView.vue'
+import Register from '@/views/Register.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -25,7 +26,12 @@ const routes = [
     path: '/busqueda',
     name: 'Busqueda',
     component: SearchView,
-  }
+  },
+  {
+  path: '/registro',
+  name: 'Register',
+  component: Register,
+}
 
 
 ]
