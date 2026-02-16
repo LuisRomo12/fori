@@ -87,11 +87,11 @@ export default {
 }
 
 .main-header {
-  box-shadow: 0 4px 15px rgba(90, 74, 66, 0.08);
+  background-color: #FDF9F1;
+  box-shadow: 0 4px 15px rgba(200, 100, 50, 0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: var(--white);
   border-bottom: 1px solid var(--primary-pink);
 }
 
