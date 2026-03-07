@@ -49,8 +49,14 @@
           <li class="has-submenu" @mouseenter="openSubmenu('user')" @mouseleave="closeSubmenu">
             <a href="/perfil" aria-label="Cuenta" v-magnetic="{ strength: 0.5 }">👤</a>
             <ul class="submenu" v-show="activeSubmenu === 'user'">
-              <li><a href="/login">Iniciar Sesión</a></li>
-              <li><a href="/registro">Registrarse</a></li>
+              <template v-if="!isLoggedIn">
+                <li><a href="/login">Iniciar Sesión</a></li>
+                <li><a href="/registro">Registrarse</a></li>
+              </template>
+              <template v-else>
+                <li><a href="/perfil">Mi Perfil</a></li>
+                <li><a href="#" @click.prevent="logout">Cerrar Sesión</a></li>
+              </template>
             </ul>
           </li>
           <a href="/carrito" class="cart-icon" aria-label="Carrito" v-magnetic="{ strength: 0.5 }">
@@ -69,7 +75,8 @@ export default {
     return {
       isMobileMenuOpen: false,
       activeSubmenu: null,
-      isDarkMode: false
+      isDarkMode: false,
+      isLoggedIn: false
     };
   },
   mounted() {
@@ -79,8 +86,24 @@ export default {
       this.isDarkMode = true;
       document.body.classList.add('dark-theme');
     }
+
+    // Comprobar si hay sesión iniciada
+    this.checkLoginStatus();
+
+    // Escuchar cambios en el login a través de un evento global o solo recargando
+    // Para simplificar, si cambian de ruta suele recargarse o re-montarse
   },
   methods: {
+    checkLoginStatus() {
+      const token = localStorage.getItem('token');
+      this.isLoggedIn = !!token;
+    },
+    logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      this.isLoggedIn = false;
+      this.$router.push('/login');
+    },
     toggleTheme() {
       this.isDarkMode = !this.isDarkMode;
       if (this.isDarkMode) {
@@ -96,6 +119,12 @@ export default {
     },
     closeSubmenu() {
       this.activeSubmenu = null;
+    }
+  },
+  watch: {
+    // Re-chequear al cambiar de ruta
+    '$route'() {
+      this.checkLoginStatus();
     }
   }
 };

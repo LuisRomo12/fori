@@ -4,6 +4,9 @@ from pydantic import BaseModel, EmailStr, field_validator
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from passlib.context import CryptContext
+from jose import jwt
+from datetime import datetime, timedelta
 import urllib.parse
 import os
 
@@ -12,6 +15,29 @@ try:
     load_dotenv()
 except ImportError:
     pass
+
+# --- CONFIGURACIÓN DE SEGURIDAD JWT ---
+SECRET_KEY = os.environ.get("SECRET_KEY", "b3c7d6e4f1a23998b47596c8a7413695") # Cambiar en producción (.env)
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 # 1 día
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
 # --- CONFIGURACIÓN DE DB ---
 usuario = os.environ.get("DB_USER", "postgres")
@@ -42,7 +68,7 @@ def get_db():
     finally:
         db.close()
 
-# --- MODELO DE VALIDACIÓN (Pydantic) ---
+# --- MODELOS DE VALIDACIÓN (Pydantic) ---
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
@@ -56,7 +82,11 @@ class UserCreate(BaseModel):
             raise ValueError('Las contraseñas no coinciden')
         return v
 
-# --- RUTA DE REGISTRO ---
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+# --- RUTAS DE AUTENTICACIÓN ---
 @app.post("/api/register", status_code=status.HTTP_201_CREATED)
 async def register_user(user: UserCreate, db: Session = Depends(get_db)):
     # 1. Validar Captcha
@@ -68,11 +98,28 @@ async def register_user(user: UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="El correo ya está registrado")
 
-    # 3. Guardar en Postgres
-    new_user = UserDB(email=user.email, password=user.password)
+    # 3. Guardar en Postgres seguro (hashear contraseña)
+    hashed_pwd = get_password_hash(user.password)
+    new_user = UserDB(email=user.email, password=hashed_pwd)
     db.add(new_user)
     db.commit()
     return {"message": "Usuario registrado exitosamente en PostgreSQL"}
+
+@app.post("/api/login")
+async def login_user(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(UserDB).filter(UserDB.email == user.email).first()
+    if not db_user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="El correo o la contraseña son incorrectos")
+    
+    if not verify_password(user.password, db_user.password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="El correo o la contraseña son incorrectos")
+    
+    # Usuario válido -> Crear Token
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": db_user.email}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer", "user": {"email": db_user.email}}
 
 app.add_middleware(
     CORSMiddleware,
