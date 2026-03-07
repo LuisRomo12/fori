@@ -10,7 +10,7 @@
     </div>
 
     <!-- Nueva Sección del Carrusel Avanzado -->
-    <section class="featured-carousel-section">
+    <section class="featured-carousel-section" v-scroll:up>
       <h2>Colecciones Destacadas</h2>
       <AdvancedCarousel :slides="carouselSlides" :autoplayInterval="4000" />
     </section>
