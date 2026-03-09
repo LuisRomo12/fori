@@ -347,10 +347,10 @@ table {
 }
 
 th, td {
-  padding: 12px 15px;
+  padding: 40px 15px;
   text-align: left;
   border-bottom: 1px solid var(--border-color, #eee);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 th {
@@ -368,4 +368,19 @@ th {
     grid-template-columns: 1fr;
   }
 }
+
+/* --- DARK MODE OVERRIDES --- */
+:global(body.dark-theme) .dashboard-admin { background-color: #121212; }
+:global(body.dark-theme) .dashboard-header h1 { color: #f8fafc; }
+:global(body.dark-theme) .dashboard-header p { color: #94a3b8; }
+:global(body.dark-theme) .search-input { background-color: #1e1e1e; color: #f8fafc; border-color: #333; }
+:global(body.dark-theme) .search-input:focus { border-color: #D66D81; box-shadow: 0 0 10px rgba(214, 109, 129, 0.3); }
+:global(body.dark-theme) .dashboard-card { background: #1e1e1e; box-shadow: 0 4px 15px rgba(255,255,255,0.02); border: 1px solid #333; }
+:global(body.dark-theme) .dashboard-card h2 { color: #f8fafc; border-bottom-color: #333; }
+:global(body.dark-theme) th { background: #1A1A1A; color: #D66D81; border-bottom-color: #333; }
+:global(body.dark-theme) td { border-bottom-color: #333; color: #e2e8f0; }
+:global(body.dark-theme) .retry-btn { background: #b91c1c; }
+:global(body.dark-theme) .retry-btn.success { background: #15803d; }
+:global(body.dark-theme) .error-banner { background: #450a0a; border-left-color: #dc2626; color: #fecaca; }
+:global(body.dark-theme) .error-content h3 { color: #fca5a5; }
 </style>

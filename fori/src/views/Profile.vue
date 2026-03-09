@@ -1,95 +1,127 @@
 <template>
   <div class="profile-layout min-h-screen bg-gray-50 dark:bg-gray-900 pb-12">
-    <!-- Header tipo MercadoLibre (Amarillo o adaptable al DarkMode) -->
-    <div class="profile-header bg-yellow-400 dark:bg-yellow-600 text-gray-900 dark:text-white py-8 px-5">
-      <div class="max-w-6xl mx-auto flex items-center gap-6">
-        <div class="avatar shadow-md">
-          {{ userInitials }}
+    
+    <!-- Contenido cuando el usuario ha iniciado sesión -->
+    <div v-if="isLoggedIn">
+      <!-- Header tipo MercadoLibre (Amarillo o adaptable al DarkMode) -->
+      <div class="profile-header bg-yellow-400 dark:bg-yellow-600 text-gray-900 dark:text-white py-8 px-5">
+        <div class="max-w-6xl mx-auto flex items-center gap-6">
+          <div class="avatar shadow-md">
+            {{ userInitials }}
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold">{{ userName }}</h1>
+            <p class="text-sm opacity-90">{{ userEmail }}</p>
+          </div>
         </div>
-        <div>
-          <h1 class="text-2xl font-bold">{{ userName }}</h1>
-          <p class="text-sm opacity-90">{{ userEmail }}</p>
+      </div>
+
+      <!-- Contenedor Principal Tablero -->
+      <main class="max-w-6xl mx-auto px-5 -mt-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <!-- Tarjeta: Información Personal -->
+          <div class="dashboard-card group">
+            <div class="card-icon bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+              👤
+            </div>
+            <div>
+              <h2 class="card-title">Información personal</h2>
+              <p class="card-desc">Actualiza tus datos y personaliza tu perfil.</p>
+            </div>
+            <button class="action-btn">Editar</button>
+          </div>
+
+          <!-- Tarjeta: Direcciones -->
+          <div class="dashboard-card group" @click="goTo('/user/addresses')">
+            <div class="card-icon bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300">
+              📍
+            </div>
+            <div>
+              <h2 class="card-title">Direcciones</h2>
+              <p class="card-desc">Direcciones guardadas para tus envíos.</p>
+            </div>
+            <button class="action-btn">Gestionar</button>
+          </div>
+
+
+          <!-- Tarjeta: Historial de Compras -->
+          <div class="dashboard-card group">
+            <div class="card-icon bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300">
+              🛍️
+            </div>
+            <div>
+              <h2 class="card-title">Mis compras</h2>
+              <p class="card-desc">Revisa el historial de tus pedidos y facturas.</p>
+            </div>
+            <button class="action-btn">Ver todas</button>
+          </div>
+
+          <!-- Tarjeta: Mi Carrito -->
+          <div class="dashboard-card group" @click="goTo('/carrito')">
+            <div class="card-icon bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300">
+              🛒
+            </div>
+            <div>
+              <h2 class="card-title">Mi carrito</h2>
+              <p class="card-desc">Tienes productos esperando por ti.</p>
+            </div>
+            <button class="action-btn">Ir al Carrito</button>
+          </div>
+
+          <!-- Tarjeta: Seguridad (Contraseña) -->
+          <div class="dashboard-card group">
+            <div class="card-icon bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300">
+              🔒
+            </div>
+            <div>
+              <h2 class="card-title">Seguridad</h2>
+              <p class="card-desc">Modifica tu contraseña y mantén tu cuenta segura.</p>
+            </div>
+            <button class="action-btn">Modificar</button>
+          </div>
+
+          <!-- Tarjeta: Volver al Inicio -->
+          <div class="dashboard-card group cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-yellow-400" @click="goTo('/')">
+            <div class="card-icon bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+              🏠
+            </div>
+            <div>
+              <h2 class="card-title">Ir al Inicio</h2>
+              <p class="card-desc">Regresa a la pantalla principal de la tienda.</p>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    <!-- Contenido cuando el usuario NO ha iniciado sesión -->
+    <div v-else class="empty-container">
+      <div class="empty-card">
+        <div class="empty-icon-wrapper">
+          <span class="empty-icon">
+            🌺
+          </span>
+        </div>
+        <h2 class="empty-title">
+          ¡Hola! Para ver tu perfil, <br/>ingresa a tu cuenta
+        </h2>
+        <p class="empty-desc">
+          Podrás ver tus compras, editar tus datos, gestionar tus direcciones favoritas y mucho más.
+        </p>
+        
+        <div class="empty-actions">
+          <button @click="goTo('/login')" class="btn-primary">
+            Iniciar sesión
+          </button>
+          <button @click="goTo('/registro')" class="btn-secondary">
+            Crear cuenta nueva
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Contenedor Principal Tablero -->
-    <main class="max-w-6xl mx-auto px-5 -mt-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        
-        <!-- Tarjeta: Información Personal -->
-        <div class="dashboard-card group">
-          <div class="card-icon bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
-            👤
-          </div>
-          <div>
-            <h2 class="card-title">Información personal</h2>
-            <p class="card-desc">Actualiza tus datos y personaliza tu perfil.</p>
-          </div>
-          <button class="action-btn">Editar</button>
-        </div>
-
-        <!-- Tarjeta: Direcciones -->
-        <div class="dashboard-card group">
-          <div class="card-icon bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300">
-            📍
-          </div>
-          <div>
-            <h2 class="card-title">Direcciones</h2>
-            <p class="card-desc">Direcciones guardadas para tus envíos.</p>
-          </div>
-          <button class="action-btn">Gestionar</button>
-        </div>
-
-        <!-- Tarjeta: Historial de Compras -->
-        <div class="dashboard-card group">
-          <div class="card-icon bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300">
-            🛍️
-          </div>
-          <div>
-            <h2 class="card-title">Mis compras</h2>
-            <p class="card-desc">Revisa el historial de tus pedidos y facturas.</p>
-          </div>
-          <button class="action-btn">Ver todas</button>
-        </div>
-
-        <!-- Tarjeta: Mi Carrito -->
-        <div class="dashboard-card group" @click="goTo('/carrito')">
-          <div class="card-icon bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300">
-            🛒
-          </div>
-          <div>
-            <h2 class="card-title">Mi carrito</h2>
-            <p class="card-desc">Tienes productos esperando por ti.</p>
-          </div>
-          <button class="action-btn">Ir al Carrito</button>
-        </div>
-
-        <!-- Tarjeta: Seguridad (Contraseña) -->
-        <div class="dashboard-card group">
-          <div class="card-icon bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300">
-            🔒
-          </div>
-          <div>
-            <h2 class="card-title">Seguridad</h2>
-            <p class="card-desc">Modifica tu contraseña y mantén tu cuenta segura.</p>
-          </div>
-          <button class="action-btn">Modificar</button>
-        </div>
-
-        <!-- Tarjeta: Volver al Inicio -->
-        <div class="dashboard-card group cursor-pointer border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-yellow-400" @click="goTo('/')">
-          <div class="card-icon bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-            🏠
-          </div>
-          <div>
-            <h2 class="card-title">Ir al Inicio</h2>
-            <p class="card-desc">Regresa a la pantalla principal de la tienda.</p>
-          </div>
-        </div>
-
-      </div>
-    </main>
   </div>
 </template>
 
@@ -99,8 +131,9 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const userEmail = ref('usuario@ejemplo.com');
-const userName = ref('Tu Nombre');
+const userEmail = ref('');
+const userName = ref('');
+const isLoggedIn = ref(false);
 
 onMounted(() => {
   // Intentar recuperar info del usuario del LocalStorage
@@ -111,7 +144,12 @@ onMounted(() => {
       userEmail.value = parsed.email || userEmail.value;
       // Por defecto el backend solo devuelve el email, usaremos la primera parte del email o "Cliente"  
       userName.value = parsed.email ? parsed.email.split('@')[0] : 'Cliente';
-    } catch (e) {}
+      isLoggedIn.value = true;
+    } catch (e) {
+      isLoggedIn.value = false;
+    }
+  } else {
+    isLoggedIn.value = false;
   }
 });
 
@@ -235,6 +273,147 @@ const goTo = (path) => {
 
 .dark-theme .action-btn:hover {
   color: #93c5fd; /* blue-300 */
+}
+
+/* Estilos para estado vacío (No iniciado sesión) */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 3rem 1.25rem;
+}
+
+.empty-card {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 32rem;
+  width: 100%;
+  text-align: center;
+  border: 1px solid #ffe4e6; /* rose-100 */
+}
+
+.dark-theme .empty-card {
+  background-color: #1f2937; /* gray-800 */
+  border-color: rgba(136, 19, 55, 0.3); /* rose-900/30 */
+}
+
+.empty-icon-wrapper {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.empty-icon {
+  background-color: #fff1f2; /* rose-50 */
+  width: 8rem;
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  font-size: 3.5rem;
+}
+
+.dark-theme .empty-icon {
+  background-color: rgba(136, 19, 55, 0.2); /* rose-900/20 */
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827; /* gray-900 */
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.dark-theme .empty-title {
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .empty-title {
+    font-size: 1.875rem;
+  }
+}
+
+.empty-desc {
+  color: #6b7280; /* gray-500 */
+  margin-bottom: 2rem;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.625;
+}
+
+.dark-theme .empty-desc {
+  color: #9ca3af; /* gray-400 */
+}
+
+.empty-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.btn-primary {
+  width: 100%;
+  background-color: #f43f5e; /* rose-500 */
+  color: white;
+  font-weight: 600;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-primary:hover {
+  background-color: #e11d48; /* rose-600 */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  background-color: #be123c; /* rose-700 */
+}
+
+.btn-secondary {
+  width: 100%;
+  background-color: white;
+  color: #f43f5e; /* rose-500 */
+  font-weight: 600;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 2px solid #f43f5e; /* rose-500 */
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-secondary:hover {
+  background-color: #fff1f2; /* rose-50 */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.dark-theme .btn-secondary {
+  background-color: #1f2937; /* gray-800 */
+  color: #fb7185; /* rose-400 */
+  border-color: #fb7185; /* rose-400 */
+}
+
+.dark-theme .btn-secondary:hover {
+  background-color: #374151; /* gray-700 */
 }
 
 /* Utilidades de Tailwind Emuladas para este componente */

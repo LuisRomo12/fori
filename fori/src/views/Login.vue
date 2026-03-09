@@ -82,12 +82,16 @@ const handleLogin = async () => {
       })
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      errorMessage.value = data.detail || 'Ocurrió un error al iniciar sesión';
+      if (response.status === 401 || response.status === 400 || response.status === 404) {
+          errorMessage.value = 'Correo electrónico o contraseña incorrectos.';
+      } else {
+          errorMessage.value = 'Error del servidor. Por favor, inténtalo más tarde.';
+      }
       return;
     }
+
+    const data = await response.json();
 
     // Guardar el token en localStorage
     localStorage.setItem('token', data.access_token);
@@ -101,7 +105,11 @@ const handleLogin = async () => {
     router.push('/');
     
   } catch (error) {
-    errorMessage.value = 'No se pudo conectar con el servidor. ¿Está encendido?';
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      errorMessage.value = 'No se pudo conectar con el servidor. ¿Está encendido?';
+    } else {
+      errorMessage.value = 'Ocurrió un error inesperado al iniciar sesión.';
+    }
     console.error('Error in login:', error);
   } finally {
     isLoading.value = false;

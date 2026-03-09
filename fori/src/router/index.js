@@ -11,6 +11,11 @@ const routes = [
   { path: '/', name: 'Home', component: Home },
 
   { path: '/catalogo', name: 'Catalogo', component: Catalog },
+  {
+    path: '/producto/:id',
+    name: 'ProductDetails',
+    component: () => import('@/views/ProductDetails.vue')
+  },
   { path: '/500', name: 'Error500', component: Error500 },
   {
     path: '/:pathMatch(.*)*',
@@ -46,6 +51,21 @@ const routes = [
     path: '/perfil',
     name: 'Perfil',
     component: () => import('@/views/Profile.vue')
+  },
+  {
+    path: '/user/addresses',
+    name: 'UserAddresses',
+    component: () => import('@/views/UserAddresses.vue')
+  },
+  {
+    path: '/user/addresses/new',
+    name: 'AddressForm',
+    component: () => import('@/views/AddressForm.vue')
+  },
+  {
+    path: '/carrito',
+    name: 'Carrito',
+    component: () => import('@/views/CartView.vue')
   }
 ]
 

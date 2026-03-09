@@ -951,16 +951,9 @@ button:disabled {
 .btn-primary:hover { background: #b86e2d; }
 
 /* RESPONSIVE */
-@media (max-width: 900px) {
+@media (max-width: 1300px) {
   .workspace {
     flex-direction: column;
-  }
-  .catalog-panel {
-    width: 100%;
-  }
-  .action-buttons {
-    flex-direction: column;
-    gap: 15px;
   }
   .btn-clear, .btn-cart, .btn-order {
     width: 100%;

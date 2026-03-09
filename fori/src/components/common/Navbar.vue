@@ -28,15 +28,18 @@
         <li class="has-submenu" @mouseenter="openSubmenu('catalog')" @mouseleave="closeSubmenu">
           <a href="/catalogo" aria-haspopup="true" v-magnetic="{ strength: 0.5 }">Catálogo ▾</a>
           <ul class="submenu" v-show="activeSubmenu === 'catalog'">
-            <li><a href="/catalogo/rosas">Rosas</a></li>
-            <li><a href="/catalogo/tulipanes">Tulipanes</a></li>
-            <li><a href="/catalogo/lirios">Lirios</a></li>
+            <li><router-link to="/catalogo" v-magnetic="{ strength: 0.2 }">Todos</router-link></li>
+            <li><router-link to="/catalogo?cat=Rosas" v-magnetic="{ strength: 0.2 }">Rosas</router-link></li>
+            <li><router-link to="/catalogo?cat=Tulipanes" v-magnetic="{ strength: 0.2 }">Tulipanes</router-link></li>
+            <li><router-link to="/catalogo?cat=Girasoles" v-magnetic="{ strength: 0.2 }">Girasoles</router-link></li>
+            <li><router-link to="/catalogo?cat=Orquídeas" v-magnetic="{ strength: 0.2 }">Orquídeas</router-link></li>
+            <li><router-link to="/catalogo?cat=Silvestres" v-magnetic="{ strength: 0.2 }">Silvestres</router-link></li>
+            <li><router-link to="/catalogo?cat=Mixtas" v-magnetic="{ strength: 0.2 }">Mixtas</router-link></li>
           </ul>
         </li>
 
         <li><a href="/constructor" class="highlight" v-magnetic="{ strength: 0.8 }">Hazlo tú mismo</a></li>
         <li><a href="/nosotros" v-magnetic="{ strength: 0.5 }">Nosotros</a></li>
-        <li><a href="/dashboard" v-magnetic="{ strength: 0.5 }">Admin</a></li>
         <li><a href="/contacto" v-magnetic="{ strength: 0.5 }">Contacto</a></li>
 
         <div class="nav-icons">

@@ -3,7 +3,7 @@
     <div class="footer-container">
       <div class="footer-brand">
         <h2 class="logo">UT<span class="accent">FLOWER</span></h2>
-        <p>Llevando frescura y creatividad a cada rincón. [cite: 1]</p>
+        <p>Llevando frescura y creatividad a cada rincón.</p>
       </div>
 
       <div class="footer-links">

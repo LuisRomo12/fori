@@ -209,3 +209,16 @@ p {
   line-height: 1.6;
 }
 </style>
+
+<style>
+/* --- DARK MODE OVERRIDES (UNSCOPED FOR HIGHER SPECIFICITY) --- */
+body.dark-theme .about-container { background-color: #121212 !important; }
+body.dark-theme .about-hero h1 { color: #f8fafc !important; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+body.dark-theme .card { background: #1e1e1e !important; border-color: #333 !important; box-shadow: 0 10px 20px rgba(255,255,255,0.02) !important; color: #f1f5f9 !important; }
+body.dark-theme .highlight { border-color: #d66d81 !important; }
+body.dark-theme .card h2, body.dark-theme .faq-section h2 { color: #d66d81 !important; }
+body.dark-theme .card p, body.dark-theme .subtitle, body.dark-theme .benefit-list { color: #cbd5e1 !important; }
+body.dark-theme .faq-item { background: #1e1e1e !important; border-color: #333 !important; }
+body.dark-theme .faq-question { color: #d66d81 !important; }
+body.dark-theme .faq-answer { color: #cbd5e1 !important; }
+</style>
