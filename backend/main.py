@@ -16,7 +16,7 @@ from decimal import Decimal
 
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 except ImportError:
     pass
 
@@ -78,10 +78,16 @@ def compress_image_b64(base64_string: str, max_dimension: int = 800, quality: in
         return base64_string  # If compression fails, return the original string safely
 
 # --- CONFIGURACIÓN DE DB ---
-usuario = os.environ.get("DB_USER", "postgres")
-password = os.environ.get("DB_PASSWORD", "password_secreta")
-password_encoded = urllib.parse.quote_plus(password)
-DATABASE_URL = f"postgresql://{usuario}:{password_encoded}@localhost:5432/floreria_db"
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if not DATABASE_URL:
+    usuario = os.environ.get("DB_USER", "postgres")
+    password = os.environ.get("DB_PASSWORD", "password_secreta")
+    password_encoded = urllib.parse.quote_plus(password)
+    DATABASE_URL = f"postgresql://{usuario}:{password_encoded}@localhost:5432/floreria_db"
+elif DATABASE_URL.startswith("postgres://"):
+    # Fix para compatibilidad con SQLAlchemy 2.0 (ej. Supabase / Neon / Render)
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
